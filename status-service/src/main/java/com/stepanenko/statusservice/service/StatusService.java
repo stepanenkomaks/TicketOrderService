@@ -16,6 +16,13 @@ public class StatusService implements StatusServiceInt {
     public String getStatus(Long orderId) {
         List<String> statuses = Stream.of(Status.values()).map(Enum::toString).toList();
         Random random = new Random();
-        return statuses.get(random.nextInt(statuses.size()));
+        int x = random.nextInt(4);
+
+        if (x == 3)
+            return Status.DONE.name();
+
+        return Status.NEW.name();
+
+        //return statuses.get(random.nextInt(statuses.size()));
     }
 }
