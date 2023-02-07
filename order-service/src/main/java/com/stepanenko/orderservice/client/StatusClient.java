@@ -11,7 +11,7 @@ public interface StatusClient {
     @CircuitBreaker(name = "status", fallbackMethod = "defaultStatus")
     String getStatus(@RequestParam Long orderId);
 
-    default String getStatus(Long orderId, Throwable throwable) {
+    default String defaultStatus(Long orderId, Throwable throwable) {
         return "Default";
     }
 }
