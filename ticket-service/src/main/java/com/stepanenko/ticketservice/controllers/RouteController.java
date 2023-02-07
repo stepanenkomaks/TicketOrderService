@@ -2,6 +2,7 @@ package com.stepanenko.ticketservice.controllers;
 
 import com.stepanenko.ticketservice.dto.RouteRequestDto;
 import com.stepanenko.ticketservice.dto.RouteResponseDto;
+import com.stepanenko.ticketservice.dto.TakeTicketResponse;
 import com.stepanenko.ticketservice.services.RouteService;
 import com.stepanenko.ticketservice.util.RouteErrorResponse;
 import com.stepanenko.ticketservice.util.exceptions.DataNotFoundException;
@@ -20,7 +21,7 @@ public class RouteController {
     private final RouteService routeService;
 
     @PatchMapping("/{id}/take")
-    public ResponseEntity<Long> takeTicket(@PathVariable("id") Long id, @RequestParam String credentials) {
+    public ResponseEntity<TakeTicketResponse> takeTicket(@PathVariable("id") Long id, @RequestParam String credentials) {
         return ResponseEntity.ok(routeService.takeTicket(credentials, id));
     }
 

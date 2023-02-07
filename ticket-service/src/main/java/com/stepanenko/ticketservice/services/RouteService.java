@@ -2,6 +2,7 @@ package com.stepanenko.ticketservice.services;
 
 import com.stepanenko.ticketservice.dto.RouteRequestDto;
 import com.stepanenko.ticketservice.dto.RouteResponseDto;
+import com.stepanenko.ticketservice.dto.TakeTicketResponse;
 import com.stepanenko.ticketservice.model.BookedTicket;
 import com.stepanenko.ticketservice.model.FreeTicket;
 import com.stepanenko.ticketservice.model.Route;
@@ -73,7 +74,7 @@ public class RouteService implements RouteServiceInt {
 
     @SneakyThrows
     @Transactional
-    public Long takeTicket(String credentials, long id) {
+    public TakeTicketResponse takeTicket(String credentials, long id) {
         Route route = routeRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("Route not found!"));
 
@@ -89,24 +90,29 @@ public class RouteService implements RouteServiceInt {
                 .route(freeTicket.getRoute())
                 .build();
 
-        String status = getOrderInfoService.getOrderInfo(credentials, route.getPrice(), bookedTicket.getId()).status();
+        String status = getOrderInfoService.getOrderInfo(credentials, route.getPrice(), bookedTicket.getId())
+                .status();
 
-        return statusHandler(status, route, freeTicket, bookedTicket);
+        return responseHandler(status, route, freeTicket, bookedTicket);
     }
 
-    private Long statusHandler(String status, Route route, FreeTicket freeTicket, BookedTicket bookedTicket) {
+    private TakeTicketResponse responseHandler(String status, Route route, FreeTicket freeTicket, BookedTicket bookedTicket) {
+        String message;
+
         if (status.equals("FAILED")) {
-            log.info("Returning total of free seats because order status was FAILED");
-            return (long) route.getFreeTickets().size();
-        }
-        else {
-            log.info("Returning id of the ticket. Order status was DONE");
+            message = "Returning total of free seats because order status was FAILED";
+            log.info(message);
+            return new TakeTicketResponse(message, (long) route.getFreeTickets().size());
+        } else {
+            message = "Returning id of the ticket. Order status was DONE";
+            log.info(message);
+
             route.getFreeTickets().remove(freeTicket);
             bookedTicket.setOrderStatus(status);
             freeTicketRepository.deleteById(freeTicket.getId());
             bookedTicketRepository.save(bookedTicket);
 
-            return bookedTicket.getId();
+            return new TakeTicketResponse(message, bookedTicket.getId());
         }
     }
 
