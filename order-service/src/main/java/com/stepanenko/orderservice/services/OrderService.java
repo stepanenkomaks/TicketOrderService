@@ -8,6 +8,7 @@ import com.stepanenko.orderservice.model.OrderTicket;
 import com.stepanenko.orderservice.repositories.OrderRepository;
 import com.stepanenko.orderservice.repositories.OrderTicketRepository;
 import com.stepanenko.orderservice.services.interfaces.OrderServiceInt;
+import com.stepanenko.util.exceptions.StatusNotReceived;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class OrderService implements OrderServiceInt {
 
+    private static final String TEMPORARY_ORDER_STATUS = "NEW";
+    private static final String DEFAULT_ORDER_STATUS = "Default";
     private final OrderRepository orderRepository;
 
     private final OrderTicketRepository orderTicketRepository;
@@ -31,8 +34,11 @@ public class OrderService implements OrderServiceInt {
         Order order = createOrderAndTicket(orderRequestDto);
 
         String status = statusClient.getStatus(order.getId());
-        if (status.equals("NEW"))
-                status = scheduledHandler.handle(order.getId());
+
+        if (status.equals(DEFAULT_ORDER_STATUS))
+            throw new StatusNotReceived("Oops! Something went wrong, we couldn't place yor order(");
+        else if (status.equals(TEMPORARY_ORDER_STATUS))
+            status = scheduledHandler.handle(order.getId());
 
         order.setStatus(status);
         orderRepository.save(order);
