@@ -6,8 +6,11 @@ import com.stepanenko.ticketservice.dto.TakeTicketResponse;
 import com.stepanenko.ticketservice.services.RouteService;
 import com.stepanenko.ticketservice.util.RouteErrorResponse;
 import com.stepanenko.ticketservice.util.exceptions.DataNotFoundException;
+import feign.FeignException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,5 +47,11 @@ public class RouteController {
     private ResponseEntity<RouteErrorResponse> handleException(DataNotFoundException e) {
         RouteErrorResponse response = new RouteErrorResponse(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<String> handleFeignStatusException() {
+        String message = "Oops! Something went wrong, we couldn't place your order(";
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 }

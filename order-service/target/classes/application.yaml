@@ -1,3 +1,6 @@
+server:
+  port: 8082
+
 spring:
   jpa:
     hibernate:
@@ -13,9 +16,10 @@ spring:
     password: 1111
   application:
     name: order-service
-
-server:
-  port: 8082
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
 
 eureka:
   client:
@@ -23,4 +27,14 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      status:
+        sliding-window-size: 5
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+
 

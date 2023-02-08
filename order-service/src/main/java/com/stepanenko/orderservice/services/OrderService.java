@@ -36,7 +36,7 @@ public class OrderService implements OrderServiceInt {
         String status = statusClient.getStatus(order.getId());
 
         if (status.equals(DEFAULT_ORDER_STATUS))
-            throw new StatusNotReceived("Oops! Something went wrong, we couldn't place yor order(");
+            throw new StatusNotReceived("Oops! Something went wrong, we couldn't place your order(");
         else if (status.equals(TEMPORARY_ORDER_STATUS))
             status = scheduledHandler.handle(order.getId());
 

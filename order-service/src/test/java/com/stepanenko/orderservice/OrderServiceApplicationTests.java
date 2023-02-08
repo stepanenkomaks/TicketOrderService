@@ -1,8 +1,8 @@
 package com.stepanenko.orderservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stepanenko.orderservice.client.StatusClient;
 import com.stepanenko.orderservice.dto.OrderRequestDto;
-import com.stepanenko.orderservice.services.GetStatusService;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ class OrderServiceApplicationTests {
 	private ObjectMapper objectMapper;
 
 	@MockBean
-	private GetStatusService getStatusService;
+	private StatusClient statusClient;
 
 	@Container
 	public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:15.1");
@@ -56,7 +56,7 @@ class OrderServiceApplicationTests {
 		String orderRequestString = objectMapper.writeValueAsString(orderRequestDto);
 
 		//WHEN
-		when(getStatusService.getStatus(1L)).thenReturn("DONE");
+		when(statusClient.getStatus(1L)).thenReturn("DONE");
 		mockMvc.perform(post("http://localhost:8082/order")
 						.content(orderRequestString)
 						.contentType(MediaType.APPLICATION_JSON)
