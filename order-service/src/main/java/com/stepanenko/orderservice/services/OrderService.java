@@ -8,7 +8,7 @@ import com.stepanenko.orderservice.model.OrderTicket;
 import com.stepanenko.orderservice.repositories.OrderRepository;
 import com.stepanenko.orderservice.repositories.OrderTicketRepository;
 import com.stepanenko.orderservice.services.interfaces.OrderServiceInt;
-import com.stepanenko.util.exceptions.StatusNotReceived;
+import com.stepanenko.orderservice.util.exceptions.StatusNotReceived;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

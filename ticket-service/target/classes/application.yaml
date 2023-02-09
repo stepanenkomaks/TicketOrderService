@@ -15,7 +15,7 @@ spring:
     name: ticket-service
 
 server:
-  port: 8080
+  port: 8082
 
 eureka:
   client:

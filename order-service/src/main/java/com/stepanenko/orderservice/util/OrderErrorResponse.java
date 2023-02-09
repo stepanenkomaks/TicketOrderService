@@ -1,4 +1,4 @@
-package com.stepanenko.util;
+package com.stepanenko.orderservice.util;
 
 public record OrderErrorResponse(String message) {
 }

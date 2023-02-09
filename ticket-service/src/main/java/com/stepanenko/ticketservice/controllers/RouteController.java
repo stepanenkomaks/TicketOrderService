@@ -50,8 +50,8 @@ public class RouteController {
     }
 
     @ExceptionHandler(FeignException.class)
-    public ResponseEntity<String> handleFeignStatusException() {
+    public ResponseEntity<String> handleFeignStatusException(FeignException e) {
         String message = "Oops! Something went wrong, we couldn't place your order(";
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(message, HttpStatusCode.valueOf(e.status()));
     }
 }
