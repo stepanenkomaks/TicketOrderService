@@ -3,6 +3,7 @@ package com.stepanenko.orderservice.services;
 import com.stepanenko.orderservice.client.StatusClient;
 import com.stepanenko.orderservice.dto.OrderRequestDto;
 import com.stepanenko.orderservice.dto.OrderResponseDto;
+import com.stepanenko.orderservice.event.OrderEvent;
 import com.stepanenko.orderservice.model.Order;
 import com.stepanenko.orderservice.model.OrderTicket;
 import com.stepanenko.orderservice.repositories.OrderRepository;
@@ -11,6 +12,7 @@ import com.stepanenko.orderservice.services.interfaces.OrderServiceInt;
 import com.stepanenko.orderservice.util.exceptions.StatusNotReceived;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,8 @@ public class OrderService implements OrderServiceInt {
 
     private final StatusClient statusClient;
 
+    private final StreamBridge streamBridge;
+
     @Transactional
     public OrderResponseDto placeOrder(OrderRequestDto orderRequestDto) {
         Order order = createOrderAndTicket(orderRequestDto);
@@ -42,6 +46,8 @@ public class OrderService implements OrderServiceInt {
 
         order.setStatus(status);
         orderRepository.save(order);
+
+        streamBridge.send("order-topic", new OrderEvent(order.getId(), order.getStatus()));
 
         return OrderResponseDto.builder()
                 .id(order.getId())

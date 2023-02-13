@@ -1,0 +1,25 @@
+spring:
+  rabbitmq:
+    port: 5672
+    host: localhost
+    username: user
+    password: password
+  application:
+    name: notification-service
+  cloud:
+    stream:
+      bindings:
+        orderEventConsumer-in-0:
+          destination: order-topic
+          group: orders-event-queue
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+server:
+  port: 0
