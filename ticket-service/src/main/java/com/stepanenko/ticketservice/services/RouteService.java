@@ -10,7 +10,8 @@ import com.stepanenko.ticketservice.repositories.BookedTicketRepository;
 import com.stepanenko.ticketservice.repositories.FreeTicketRepository;
 import com.stepanenko.ticketservice.repositories.RouteRepository;
 import com.stepanenko.ticketservice.services.interfaces.RouteServiceInt;
-import com.stepanenko.ticketservice.util.exceptions.DataNotFoundException;
+import com.stepanenko.ticketservice.util.exceptions.RouteNotFoundException;
+import com.stepanenko.ticketservice.util.exceptions.TicketNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +53,7 @@ public class RouteService implements RouteServiceInt {
 
     public RouteResponseDto findById(long id) {
         Route route = routeRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Route not found!"));
+                .orElseThrow(() -> new RouteNotFoundException("Route not found!"));
         return mapToResponse(route);
     }
 
@@ -76,12 +77,12 @@ public class RouteService implements RouteServiceInt {
     @Transactional
     public TakeTicketResponse takeTicket(String credentials, long id) {
         Route route = routeRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Route not found!"));
+                .orElseThrow(() -> new RouteNotFoundException("Route not found!"));
 
         List<FreeTicket> tickets = route.getFreeTickets();
 
         if (tickets.isEmpty())
-            throw new DataNotFoundException("There are no available tickets for this route!");
+            throw new TicketNotFoundException("There are no available tickets for this route!");
 
         FreeTicket freeTicket = tickets.get(tickets.size() - 1);
         BookedTicket bookedTicket = BookedTicket.builder()

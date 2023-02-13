@@ -8,7 +8,7 @@ import com.stepanenko.ticketservice.model.Route;
 import com.stepanenko.ticketservice.repositories.FreeTicketRepository;
 import com.stepanenko.ticketservice.repositories.RouteRepository;
 import com.stepanenko.ticketservice.services.interfaces.FreeTicketServiceInt;
-import com.stepanenko.ticketservice.util.exceptions.DataNotFoundException;
+import com.stepanenko.ticketservice.util.exceptions.RouteNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class FreeTicketService implements FreeTicketServiceInt {
 
     private FreeTicket mapToTicket(TicketRequestDto ticketRequestDto) {
         Route route = routeRepository.findById(ticketRequestDto.getRouteId())
-                .orElseThrow(() -> new DataNotFoundException("No such route"));
+                .orElseThrow(() -> new RouteNotFoundException("No such route"));
         return FreeTicket.builder()
                 .route(route)
                 .build();

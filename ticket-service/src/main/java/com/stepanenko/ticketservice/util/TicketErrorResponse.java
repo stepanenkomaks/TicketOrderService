@@ -1,4 +1,6 @@
 package com.stepanenko.ticketservice.util;
 
-public record TicketErrorResponse(String message) {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public record TicketErrorResponse(@Schema(example = "Ticket not found!") String message) {
 }

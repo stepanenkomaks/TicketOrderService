@@ -6,7 +6,7 @@ import com.stepanenko.ticketservice.model.BookedTicket;
 import com.stepanenko.ticketservice.model.Route;
 import com.stepanenko.ticketservice.repositories.BookedTicketRepository;
 import com.stepanenko.ticketservice.services.interfaces.BookedTicketServiceInt;
-import com.stepanenko.ticketservice.util.exceptions.DataNotFoundException;
+import com.stepanenko.ticketservice.util.exceptions.TicketNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ public class BookedTicketService implements BookedTicketServiceInt {
 
     public BookedTicketResponseDto getTicketInfo(Long id) {
         BookedTicket ticket = bookedTicketRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Ticket not found!"));
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found!"));
 
         Route route = ticket.getRoute();
 

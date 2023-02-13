@@ -1,4 +1,6 @@
 package com.stepanenko.ticketservice.util;
 
-public record RouteErrorResponse (String message) {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public record RouteErrorResponse (@Schema(example = "Route not found!") String message) {
 }
