@@ -13,6 +13,10 @@ spring:
           destination: order-topic
           group: orders-event-queue
 
+management:
+  tracing:
+    sampling:
+      probability: 1.0
 
 eureka:
   client:
