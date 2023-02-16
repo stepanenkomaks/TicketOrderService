@@ -1,0 +1,3 @@
+com/example/notificationservice/NotificationServiceApplication.class
+com/example/notificationservice/event/OrderEvent.class
+com/example/notificationservice/config/RabbitConfig.class
