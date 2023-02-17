@@ -64,7 +64,7 @@ public class TicketServiceTest{
         String routeRequestString = objectMapper.writeValueAsString(routeRequestDto);
 
         //WHEN
-        mockMvc.perform(post("/routes/new")
+        mockMvc.perform(post("/routes")
                         .content(routeRequestString)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -80,7 +80,7 @@ public class TicketServiceTest{
         String routeRequestString = objectMapper.writeValueAsString(ticketRequestDto);
 
         //WHEN
-        mockMvc.perform(post("/tickets/new")
+        mockMvc.perform(post("/tickets")
                         .content(routeRequestString)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -96,16 +96,18 @@ public class TicketServiceTest{
         OrderInfoResponseDto orderInfoResponse = new OrderInfoResponseDto(2L, "DONE");
 
         //WHEN
-        when(getOrderInfoService.getOrderInfo("Stepanenko Maks", 200, 2L)).thenReturn(orderInfoResponse);
-        String result = mockMvc.perform(patch("/routes/1/take")
+        when(getOrderInfoService.getOrderInfo("Stepanenko Maks", 200, 11L)).thenReturn(orderInfoResponse);
+
+        String result = mockMvc.perform(patch("/routes/3/take")
                 .param("credentials", "Stepanenko Maks"))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString();
+                .getContentAsString()
+                .split(",")[1];
 
         //THEN
-        Assertions.assertEquals("2", result);
+        Assertions.assertEquals("\"value\":11}", result);
     }
 
     @Test
@@ -113,7 +115,7 @@ public class TicketServiceTest{
     @Sql(value = "/add_route.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void shouldNotTakeATicket() {
         //WHEN
-        mockMvc.perform(patch("/routes/1/take")
+        mockMvc.perform(patch("/routes/3/take")
                         .param("credentials", "Stepanenko Maks"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$..message").
@@ -125,9 +127,9 @@ public class TicketServiceTest{
     @Sql(value = "/add_route.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void shouldGetTheRoute() {
         //WHEN
-        mockMvc.perform(get("/routes/1"))
+        mockMvc.perform(get("/routes/3"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").value(3L))
                 .andExpect(jsonPath("$.placeFrom").value("Dnipro"))
                 .andExpect(jsonPath("$.placeTo").value("Lviv"))
                 .andExpect(jsonPath("$.departureTime").value("1648933200000"))
@@ -139,7 +141,7 @@ public class TicketServiceTest{
     @SneakyThrows
     public void shouldNotGetTheRoute() {
         //WHEN
-        mockMvc.perform(get("/routes/1"))
+        mockMvc.perform(get("/routes/3"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$..message").
                         value("Route not found!"));
@@ -158,7 +160,7 @@ public class TicketServiceTest{
         ArrayList<Object> list = objectMapper.readValue(response, ArrayList.class);
 
         //THEN
-        Assertions.assertEquals(1, list.size());
+        Assertions.assertEquals(3, list.size());
     }
 
     @Test
@@ -167,11 +169,11 @@ public class TicketServiceTest{
     @Sql(value = "/add_tickets.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void shouldGetABookedTicketInfo() {
         //WHEN
-        mockMvc.perform(get("/tickets/2"))
+        mockMvc.perform(get("/tickets/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.credentials").value("Stepanenko Maks"))
                 .andExpect(jsonPath("$.orderStatus").value("DONE"))
-                .andExpect(jsonPath("$.route.id").value(1L))
+                .andExpect(jsonPath("$.route.id").value(3L))
                 .andExpect(jsonPath("$.route.placeFrom").value("Dnipro"))
                 .andExpect(jsonPath("$.route.placeTo").value("Lviv"))
                 .andExpect(jsonPath("$.route.price").value(200))

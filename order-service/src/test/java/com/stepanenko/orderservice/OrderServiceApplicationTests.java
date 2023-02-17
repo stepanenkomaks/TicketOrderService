@@ -57,7 +57,8 @@ class OrderServiceApplicationTests {
 
 		//WHEN
 		when(statusClient.getStatus(1L)).thenReturn("DONE");
-		mockMvc.perform(post("http://localhost:8082/order")
+
+		mockMvc.perform(post("/order")
 						.content(orderRequestString)
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON))
