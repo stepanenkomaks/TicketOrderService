@@ -1,1 +1,1 @@
-{"image":"registry.hub.docker.com/stepanenko4maks/order-service-image","imageId":"sha256:f59afc29bd950cd71afa4e5b825d8cdc70b39fe2d78d29fac6b69c1cc89781d1","imageDigest":"sha256:5016ac56fd4953acbca4130f1315017a3192b251d7d7c499209e12d4134ec4a1","tags":["latest"]}
+{"image":"registry.hub.docker.com/stepanenko4maks/order-service-image","imageId":"sha256:827dcb0bb76269161b27b7ca71b0f6dba321988bfc807890ee5d53046d08bd00","imageDigest":"sha256:50b968ac063da3ec6095fdca48641250291c03e2106fb0036990fde3662d3bca","tags":["latest"]}
