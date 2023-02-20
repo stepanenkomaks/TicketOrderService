@@ -1,5 +1,6 @@
 version: '3'
 services:
+  ##DB for order-service
   postgres-order:
     image: postgres
     container_name: postgres-order
@@ -17,6 +18,7 @@ services:
     command: -p 5430
     restart: unless-stopped
 
+  ##DB for ticket-service
   postgres-ticket:
     image: postgres
     container_name: postgres-ticket
@@ -136,7 +138,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=TRACE
 
-      ##Ticket service
+  ##Ticket service
   ticket-service:
     image: stepanenko4maks/ticket-service-image:latest
     container_name: ticket-service
