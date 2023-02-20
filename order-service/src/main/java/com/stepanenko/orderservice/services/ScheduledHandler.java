@@ -1,6 +1,6 @@
 package com.stepanenko.orderservice.services;
 
-import com.stepanenko.orderservice.client.StatusClient;
+import com.stepanenko.orderservice.client.GetStatusClient;
 import com.stepanenko.orderservice.services.interfaces.ScheduledHandlerInt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class ScheduledHandler implements ScheduledHandlerInt {
 
     private String status;
 
-    private final StatusClient statusClient;
+    private final GetStatusClient getStatusClient;
 
     //Method checks status every second.
     //If after 1 minute status was not received it makes status "FAIL"
@@ -31,7 +31,7 @@ public class ScheduledHandler implements ScheduledHandlerInt {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
         Runnable checkStatusTask = () -> {
-            status = statusClient.getStatus(orderId);
+            status = getStatusClient.getStatus(orderId);
             log.info("Got status check: " + status);
         };
 

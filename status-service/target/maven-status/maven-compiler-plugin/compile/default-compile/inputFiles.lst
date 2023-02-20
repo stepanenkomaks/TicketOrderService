@@ -1,5 +1,6 @@
 /Users/mac/Desktop/StepanenkoTestTask/BusTicketsService/status-service/src/main/java/com/stepanenko/statusservice/StatusServiceApplication.java
 /Users/mac/Desktop/StepanenkoTestTask/BusTicketsService/status-service/src/main/java/com/stepanenko/statusservice/model/Status.java
+/Users/mac/Desktop/StepanenkoTestTask/BusTicketsService/status-service/src/main/java/com/stepanenko/statusservice/config/SwaggerConfiguration.java
 /Users/mac/Desktop/StepanenkoTestTask/BusTicketsService/status-service/src/main/java/com/stepanenko/statusservice/controller/StatusController.java
 /Users/mac/Desktop/StepanenkoTestTask/BusTicketsService/status-service/src/main/java/com/stepanenko/statusservice/service/interfaces/StatusServiceInt.java
 /Users/mac/Desktop/StepanenkoTestTask/BusTicketsService/status-service/src/main/java/com/stepanenko/statusservice/service/StatusService.java

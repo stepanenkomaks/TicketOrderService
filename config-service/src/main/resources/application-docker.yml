@@ -1,0 +1,14 @@
+server:
+  port: 8888
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/stepanenkomaks/TicketOrderService/blob/381ce0f485c96ff60f92416e187f4b0750d3f9bb/config-service/src/main/resources/config

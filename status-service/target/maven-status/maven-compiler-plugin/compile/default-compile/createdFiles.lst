@@ -1,5 +1,6 @@
 com/stepanenko/statusservice/controller/StatusController.class
-com/stepanenko/statusservice/model/Status.class
 com/stepanenko/statusservice/service/StatusService.class
+com/stepanenko/statusservice/config/SwaggerConfiguration.class
 com/stepanenko/statusservice/service/interfaces/StatusServiceInt.class
+com/stepanenko/statusservice/model/Status.class
 com/stepanenko/statusservice/StatusServiceApplication.class

@@ -1,0 +1,27 @@
+server:
+  port: 0
+
+spring:
+  rabbitmq:
+    port: 5672
+    host: myRabbitMQ
+    username: user
+    password: password
+  application:
+    name: notification-service
+  cloud:
+    stream:
+      bindings:
+        orderEventConsumer-in-0:
+          destination: order-topic
+          group: orders-event-queue
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discovery-service:8761/eureka/
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans

@@ -1,15 +1,154 @@
 version: '3'
 services:
+  postgres-order:
+    image: postgres
+    container_name: postgres-order
+    environment:
+      POSTGRES_DB: orders_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1111
+      PGDATA: /data/postgres
+    volumes:
+      - ./volumes-docker/postgres-order:/data/postgres
+    expose:
+      - "5430"
+    ports:
+      - "5430:5430"
+    command: -p 5430
+    restart: unless-stopped
+
+  postgres-ticket:
+    image: postgres
+    container_name: postgres-ticket
+    environment:
+      POSTGRES_DB: tickets_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1111
+      PGDATA: /data/postgres
+    volumes:
+      - ./volumes-docker/postgres-ticket:/data/postgres
+    expose:
+      - "5431"
+    ports:
+      - "5431:5431"
+    command: -p 5431
+    restart: unless-stopped
+
   myRabbitMQ:
     image: rabbitmq:3-management-alpine
+    container_name: myRabbitMQ
     environment:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
     ports:
       - "5672:5672"
       - "15672:15672"
+
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
     ports:
       - "9411:9411"
+
+  ## Eureka Server
+  discovery-service:
+    image: stepanenko4maks/discovery-image:latest
+    container_name: discovery-service
+    pull_policy: always
+    ports:
+      - "8761:8761"
+    depends_on:
+      - zipkin
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  ## Config Service
+  config-service:
+    image: stepanenko4maks/config-image:latest
+    container_name: config-service
+    pull_policy: always
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - zipkin
+      - discovery-service
+
+  ##Api gateway
+  api-gateway:
+    image: stepanenko4maks/api-gateway-image:latest
+    container_name: api-gateway
+    pull_policy: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=TRACE
+    depends_on:
+      - zipkin
+      - discovery-service
+
+  ##Status service
+  status-service:
+    image: stepanenko4maks/status-service-image
+    container_name: status-service
+    pull_policy: always
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=TRACE
+    depends_on:
+      - discovery-service
+      - config-service
+      - api-gateway
+      - zipkin
+
+  ##Notification Service
+  notification-service:
+    image: stepanenko4maks/notification-image:latest
+    container_name: notification-service
+    pull_policy: always
+    depends_on:
+      - discovery-service
+      - zipkin
+      - myRabbitMQ
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=TRACE
+
+  ##Order service
+  order-service:
+    image: stepanenko4maks/order-service-image:latest
+    container_name: order-service
+    pull_policy: always
+    depends_on:
+      - discovery-service
+      - config-service
+      - postgres-order
+      - zipkin
+      - myRabbitMQ
+      - api-gateway
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=TRACE
+
+      ##Ticket service
+  ticket-service:
+    image: stepanenko4maks/ticket-service-image:latest
+    container_name: ticket-service
+    pull_policy: always
+    depends_on:
+      - discovery-service
+      - config-service
+      - postgres-ticket
+      - zipkin
+      - api-gateway
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=TRACE

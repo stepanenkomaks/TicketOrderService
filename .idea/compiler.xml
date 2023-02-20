@@ -11,8 +11,8 @@
         <module name="config-service" />
         <module name="api-gateway" />
         <module name="order-service" />
-        <module name="discovery-service" />
         <module name="notification-service" />
+        <module name="discovery-service" />
         <module name="ticket-service" />
       </profile>
     </annotationProcessing>
