@@ -1,15 +1,18 @@
 package com.stepanenko.orderservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stepanenko.orderservice.client.StatusClient;
+import com.stepanenko.orderservice.client.GetStatusClient;
 import com.stepanenko.orderservice.dto.OrderRequestDto;
+import com.stepanenko.orderservice.event.OrderEvent;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Testcontainers
 @Transactional
+@ActiveProfiles("test")
 class OrderServiceApplicationTests {
 
 	@Autowired
@@ -36,7 +40,10 @@ class OrderServiceApplicationTests {
 	private ObjectMapper objectMapper;
 
 	@MockBean
-	private StatusClient statusClient;
+	private GetStatusClient getStatusClient;
+
+	@MockBean
+	private StreamBridge streamBridge;
 
 	@Container
 	public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:15.1");
@@ -56,7 +63,8 @@ class OrderServiceApplicationTests {
 		String orderRequestString = objectMapper.writeValueAsString(orderRequestDto);
 
 		//WHEN
-		when(statusClient.getStatus(1L)).thenReturn("DONE");
+		when(getStatusClient.getStatus(1L)).thenReturn("DONE");
+		when(streamBridge.send("order-topic", new OrderEvent(1L, "DONE"))).thenReturn(true);
 
 		mockMvc.perform(post("/order")
 						.content(orderRequestString)

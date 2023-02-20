@@ -1,6 +1,6 @@
 package com.stepanenko.orderservice.services;
 
-import com.stepanenko.orderservice.client.StatusClient;
+import com.stepanenko.orderservice.client.GetStatusClient;
 import com.stepanenko.orderservice.dto.OrderRequestDto;
 import com.stepanenko.orderservice.dto.OrderResponseDto;
 import com.stepanenko.orderservice.event.OrderEvent;
@@ -29,7 +29,7 @@ public class OrderService implements OrderServiceInt {
 
     private final ScheduledHandler scheduledHandler;
 
-    private final StatusClient statusClient;
+    private final GetStatusClient getStatusClient;
 
     private final StreamBridge streamBridge;
 
@@ -37,7 +37,7 @@ public class OrderService implements OrderServiceInt {
     public OrderResponseDto placeOrder(OrderRequestDto orderRequestDto) {
         Order order = createOrderAndTicket(orderRequestDto);
 
-        String status = statusClient.getStatus(order.getId());
+        String status = getStatusClient.getStatus(order.getId());
 
         if (status.equals(DEFAULT_ORDER_STATUS))
             throw new StatusNotReceived("Oops! Something went wrong, we couldn't place your order(");

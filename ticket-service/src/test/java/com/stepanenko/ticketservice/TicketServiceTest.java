@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -34,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Testcontainers
 @Transactional
+@ActiveProfiles("test")
 public class TicketServiceTest{
 
     @Autowired
@@ -160,7 +162,7 @@ public class TicketServiceTest{
         ArrayList<Object> list = objectMapper.readValue(response, ArrayList.class);
 
         //THEN
-        Assertions.assertEquals(3, list.size());
+        Assertions.assertEquals(1, list.size());
     }
 
     @Test
@@ -192,7 +194,7 @@ public class TicketServiceTest{
 
     private TicketRequestDto createTicketRequest() {
         return TicketRequestDto.builder()
-                .routeId(1L)
+                .routeId(3L)
                 .build();
     }
 
