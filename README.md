@@ -13,7 +13,7 @@
 You will like those project!
 
 ---
-### General info :musical_note:
+### General info :man_student:
 This is a pet project based on the simulation of the bus ticket system of booking a ticket on the route.
 
 It includes 7 microservices:
