@@ -86,7 +86,7 @@ In status service:
 - [Grafana](http://localhost:3000) - visualize data from Prometheus
 
 ### IMPOTRANT :fire: :fire:
-- bootstrap.yml - those file calls a separate service 
+- bootstrap.yml - those files call a separate service (`config-service`)
  so that all your configurations and settings are pulled from a separate service and are secured  
 - To create grafana dashboard use file Grafana_Dashboard.json
 
