@@ -164,8 +164,8 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
-      - product-service
-      - inventory-service
+      - ticket-service
+      - status-service
       - order-service
       - notification-service
 
