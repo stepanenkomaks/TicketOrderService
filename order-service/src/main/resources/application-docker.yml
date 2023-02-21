@@ -48,6 +48,10 @@ resilience4j:
         automatic-transition-from-open-to-half-open-enabled: true
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
   zipkin:
     tracing:
       endpoint: http://zipkin:9411/api/v2/spans

@@ -30,6 +30,10 @@ spring:
       matching-strategy: ant_path_matcher
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
   zipkin:
     tracing:
       endpoint: http://zipkin:9411/api/v2/spans

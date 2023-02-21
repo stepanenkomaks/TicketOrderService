@@ -39,6 +39,10 @@ resilience4j:
         automatic-transition-from-open-to-half-open-enabled: true
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
   tracing:
     sampling:
       probability: 1.0

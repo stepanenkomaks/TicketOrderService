@@ -7,6 +7,10 @@ eureka:
       defaultZone: http://discovery-service:8761/eureka/
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
   zipkin:
     tracing:
       endpoint: http://zipkin:9411/api/v2/spans
