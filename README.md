@@ -18,7 +18,7 @@ This is a pet project based on the simulation of the bus ticket system of bookin
 
 It includes 7 microservices:
 1. api-gateway (port for all services is 8080)
-2. config-service (stores all the configuration of ticket-, order- and status-service)
+2. config-service (stores all configuration of ticket-, order- and status-service)
 3. discovery-service 
 4. notification-service (gets order info from order-service via RabbitMQ and show it, using logs)
 5. ticket-service (manage routes, tickets and make an order on a route; communicates with order-service via http)
