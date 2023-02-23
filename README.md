@@ -69,10 +69,10 @@ In ticket service:
 - Get `booked ticket` info
 
 In order service:
-- Create order
+- Create `order`
 
 In status service:
-- Get status for provided order id
+- Get `status` for provided order id
 
 #### To test the microservices (2 ways):
 - [Open the Swagger](http://localhost:8083/swagger-ui/index.html) - change port to see swagger documentation for different services 
