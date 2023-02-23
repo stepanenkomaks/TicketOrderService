@@ -18,12 +18,12 @@ This is a pet project based on the simulation of the bus ticket system of bookin
 
 It includes 7 microservices:
 1. api-gateway (port for all services is 8080)
-2. config-service (stores all the configuration of 3 ticket-, order- and status-service)
+2. config-service (stores all the configuration of ticket-, order- and status-service)
 3. discovery-service 
 4. notification-service (gets order info from order-service via RabbitMQ and show it, using logs)
 5. ticket-service (manage routes, tickets and make an order on a route; communicates with order-service via http)
 6. order-service (makes an order; communicates with status-service via http)
-7. status-service (gives on of three statuses (NEW/DONE/FAILED) to given order)
+7. status-service (gives one of three statuses (NEW/DONE/FAILED) to given order)
 
 All the services can be started using images from docker-compose file.
 
