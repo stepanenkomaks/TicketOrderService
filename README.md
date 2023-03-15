@@ -52,7 +52,7 @@ All properties for all required images are in docker-compose.yml file. So, to ru
 
 Run project
 ````
-docker compose up -d
+docker compose up
 ````
 Enjoy the application :sunglasses:
 
