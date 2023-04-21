@@ -10,7 +10,7 @@
 - `Micrometer and Zipkin`
 - `Prometheus and Grafana`
 
-You will like those project!
+You will like this project!
 
 ---
 ### General info :man_student:
