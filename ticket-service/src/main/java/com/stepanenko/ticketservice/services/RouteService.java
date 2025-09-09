@@ -90,9 +90,6 @@ public class RouteService implements RouteServiceInt {
                 .credentials(credentials)
                 .route(freeTicket.getRoute())
                 .build();
-        bookedTicket.setId(freeTicket.getId());
-        bookedTicket.setCredentials(credentials);
-        bookedTicket.setRoute(freeTicket.getRoute());
 
         String status = getOrderInfoService.getOrderInfo(credentials, route.getPrice(), bookedTicket.getId())
                 .status();
