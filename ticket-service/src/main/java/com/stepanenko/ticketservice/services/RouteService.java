@@ -76,13 +76,19 @@ public class RouteService implements RouteServiceInt {
     @SneakyThrows
     @Transactional
     public TakeTicketResponse takeTicket(String credentials, long id) {
+        log.info("Taking ticket for credentials={}", credentials);
         Route route = routeRepository.findById(id)
                 .orElseThrow(() -> new RouteNotFoundException("Route not found!"));
 
         List<FreeTicket> tickets = route.getFreeTickets();
 
-        if (tickets.isEmpty())
-            throw new TicketNotFoundException("There are no available tickets for this route!");
+        try {
+            if (tickets.isEmpty())
+                throw new TicketNotFoundException("There are no available tickets for this route!");
+        } catch (TicketNotFoundException e) {
+            throw new TicketNotFoundException("There is no available tickets for this route!");
+        }
+
 
         FreeTicket freeTicket = tickets.get(tickets.size() - 1);
         BookedTicket bookedTicket = BookedTicket.builder()
@@ -100,7 +106,7 @@ public class RouteService implements RouteServiceInt {
     private TakeTicketResponse responseHandler(String status, Route route, FreeTicket freeTicket, BookedTicket bookedTicket) {
         String message;
 
-        if (status.equals("FAILED")) {
+        if (status == "FAILED") {
             message = "Returning total of free seats because order status was FAILED";
             log.info(message);
             return new TakeTicketResponse(message, (long) route.getFreeTickets().size());
